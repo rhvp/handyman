@@ -1,5 +1,6 @@
 # handyman
 HandyMan web app
 
-This web app uses google geo-location API to fetch a users current location and uses the information to search
-for selected type of handymen within a 5km radius.
+HandyMan is a based web app built on NodeJs and uses Mongodb.
+Using a users location, it searches a database of technicians (plumbers, carpenters, electricians and more)
+and returns the closest technician within a 5km radius.
