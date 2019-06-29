@@ -1,7 +1,11 @@
 const express = require('express');
+const fs = require('fs');
+const http = require('http');
+const https = require('https');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const app = express();
+
 
 // Connecting to mongodb
 mongoose.connect('mongodb://localhost/plumberDb', {useNewUrlParser: true});
@@ -24,10 +28,11 @@ app.use(require('./Routes/api'));
 
 
 // error-handling middleware
-app.use(function(err, req, res, next){
+app.use((err, req, res, next) => {
   res.status(422).send({error: err.message});
-})
+});
 
-app.listen(4000, function(){
+
+app.listen(4000, () => {
   console.log("now listening on port 4000");
-})
+});
