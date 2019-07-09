@@ -1,8 +1,7 @@
 body{
     font-family: Raleway, sans-serif;
-    color: #555;
+    color: #fff;
     background: #51c4ff;
-    margin: 10px 30px;
 }
 #homepage{
     max-width: 800px;
@@ -11,6 +10,9 @@ body{
     background: #fdfdfd;
     border-radius: 4px;
     box-shadow: 1px 2px 3px rgba(0,0,0,0.2);
+}
+#homepage h1 {
+  color: #555;
 }
 input[type="text"]{
     display: block;
@@ -27,8 +29,9 @@ label{
     color: #fff;
     text-align: center;
     font-size: 48px;
+    font-weight: bold;
 }
-#homepage h1{
+h1{
     text-align: center;
 }
 form{
@@ -47,11 +50,11 @@ input[type="submit"]{
      cursor: pointer;
      border-radius: 4px;
  }
-ul{
+.list{
     margin: 0;
     padding: 0;
 }
-li{
+.list li{
     padding: 15px 0;
     background: #eee;
     list-style-type: none;
@@ -60,38 +63,13 @@ li{
     margin: 10px 0;
     border-radius: 4px;
 }
-span{
+li span{
     display: inline-block;
     margin: 0 20px;
 }
-span.dist{
-    color: green;
-    float: right;
-}
-span.true{
-    border-radius: 10px;
-    width: 10px;
-    height: 10px;
-    background: green;
-}
-span.false{
-    border-radius: 10px;
-    width: 10px;
-    height: 10px;
-    background: #ff5252;
-}
-button{
-    float: right;
-    background: green;
-    border: 0;
-    padding: 5px 10px;
-    color: #fff;
-    display: inline-block;
-    border-radius: 4px;
-    cursor: pointer;
-}
-button.false{display: none;}
 
-#map {
-  height: 100%;
+
+
+.buttons {
+  margin-top: 80px;
 }

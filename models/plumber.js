@@ -13,6 +13,14 @@ const GeoSchema = new Schema({
 })
 
 const PlumberSchema = new Schema({
+  email: {
+    type: String,
+    required: [true, "email is required"]
+  },
+  password: {
+    type: String,
+    required: [true, "Password is required"]
+  },
   name: {
     type: String,
     required: [true, "Name is required"]
@@ -30,8 +38,8 @@ const PlumberSchema = new Schema({
     type: Boolean,
     default: true
   },
-  geometry: GeoSchema
-})
+  geometry: GeoSchema,
+}, {timestamps: true});
 
 const Plumber = mongoose.model('plumber', PlumberSchema);
 
