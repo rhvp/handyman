@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Hire Plumbers</title>
+    <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+
+
+  </head>
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+          aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">HandyMan</a>
+        </div>
+
+        <div class="navbar-collapse collapse" id="navbar">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">Login</a></li>
+            <li><a href="#"><span class="glyphicon glyphicon-wrench"></span></a></li>
+          </ul>
+        </div>
+
+      </div>
+    </nav>
+
+    <div class="container">
+      <h1 class="title">HandyMan</h1>
+      <div class="row">
+        <div id="homepage">
+          <h1>Hire a Technician near you!!</h1>
+          <div id="plumbers">
+            <form class="needs-validation" id="search" novalidate>
+
+                <div class="form-group">
+                  <label for="select-technician">Select Technician</label>
+                  <select class="form-control form-control-lg" id="select-technician" required>
+                    <option disabled>Electrician</option>
+                    <option >Carpenter</option>
+                    <option disabled>Generator Technician</option>
+                    <option >Plumber</option>
+                    <option disabled>Painter</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="userlat">Your Latitude:</label>
+                  <input class="form-control" id="userlat" type="text" name="lat" value=""  required>
+                </div>
+                <div class="form-group">
+                  <label for="userlong">Your Longitude:</label>
+                  <input class="form-control" id="userlong" type="text" name="lng" value=""  required>
+                </div>
+                <div class="form-group">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" required>
+                    <label class="form-check-label" for="invalidCheck2">
+                      Find by current location
+                    </label>
+                  </div>
+                </div>
+                <button type="submit" class="submit-btn">Search</button>
+              </form>
+          </div>
+          <ul id="list"></ul>
+          <div id="map"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/assets/js/jquery.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/maps.js"></script>
+    <script src="/assets/js/script.js"></script>
+
+  </body>
+</html>

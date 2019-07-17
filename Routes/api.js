@@ -1,11 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const Plumber = require('../models/plumber');
+const Carpenter = require('../models/carpenter');
 
-router.get('/plumber',(req, res, next)=>{
-  Plumber.find({}).then((plumbers)=>{
-    res.render('plumber', plumbers);
-  }).catch(next);
+router.get('/tech',(req, res)=>{
+    res.render('tech');
 });
 
 router.get('/home', (req, res) => {
@@ -15,6 +14,14 @@ router.get('/home', (req, res) => {
 
 router.get('/plumbers', (req, res, next)=>{
   Plumber.aggregate([{ $geoNear: { near: {type: 'Point',
+  coordinates: [parseFloat(req.query.lat), parseFloat(req.query.lng)]},
+  spherical: true, maxDistance: 10000, distanceField: "dist.calculated" }
+}]).then((plumbers)=>{ res.send(plumbers);
+}).catch(next);
+});
+
+router.get('/carpenters', (req, res, next)=>{
+  Carpenter.aggregate([{ $geoNear: { near: {type: 'Point',
   coordinates: [parseFloat(req.query.lat), parseFloat(req.query.lng)]},
   spherical: true, maxDistance: 10000, distanceField: "dist.calculated" }
 }]).then((plumbers)=>{ res.send(plumbers);

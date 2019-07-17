@@ -9,6 +9,7 @@ const app = express();
 
 // Connecting to mongodb
 mongoose.connect('mongodb://localhost/plumberDb', {useNewUrlParser: true});
+mongoose.connect('mongodb://localhost/carpDb', {useNewUrlParser: true});
 mongoose.set('useCreateIndex', true);
 mongoose.Promise = global.Promise;
 

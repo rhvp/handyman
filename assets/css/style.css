@@ -14,16 +14,17 @@ body{
 #homepage h1 {
   color: #555;
 }
-input[type="text"]{
+/* input[type="text"]{
     display: block;
     width: 300px;
     margin: 20px 0;
     padding: 10px;
     border-radius: 4px;
     border: 1px solid #ddd;
-}
+} */
 label{
     font-weight: bold;
+    color: #555;
 }
 .title{
     color: #fff;
@@ -34,11 +35,11 @@ label{
 h1{
     text-align: center;
 }
-form{
+/* form{
     max-width: 350px;
     margin: 30px auto;
-}
-input[type="submit"]{
+} */
+.submit-btn{
     background: #555;
      color: #fff;
      border: 0;
@@ -50,11 +51,11 @@ input[type="submit"]{
      cursor: pointer;
      border-radius: 4px;
  }
-.list{
+#list{
     margin: 0;
     padding: 0;
 }
-.list li{
+#list li{
     padding: 15px 0;
     background: #eee;
     list-style-type: none;
@@ -66,6 +67,9 @@ input[type="submit"]{
 li span{
     display: inline-block;
     margin: 0 20px;
+    color: #555;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 
