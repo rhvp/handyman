@@ -4,10 +4,13 @@
 
 'use strict';
 
-const castObjectId = require('../cast/objectid');
+const SchemaObjectIdOptions = require('../options/SchemaObjectIdOptions');
 const SchemaType = require('../schematype');
+const castObjectId = require('../cast/objectid');
 const oid = require('../types/objectid');
 const utils = require('../utils');
+
+const populateModelSymbol = require('../helpers/symbols').populateModelSymbol;
 
 const CastError = SchemaType.CastError;
 let Document;
@@ -47,6 +50,7 @@ ObjectId.schemaName = 'ObjectId';
  */
 ObjectId.prototype = Object.create(SchemaType.prototype);
 ObjectId.prototype.constructor = ObjectId;
+ObjectId.prototype.OptionsConstructor = SchemaObjectIdOptions;
 
 /**
  * Attaches a getter for all ObjectId instances
@@ -226,7 +230,7 @@ ObjectId.prototype.cast = function(value, doc, init) {
         !doc.$__.populated[path].options ||
         !doc.$__.populated[path].options.options ||
         !doc.$__.populated[path].options.options.lean) {
-      ret = new pop.options.model(value);
+      ret = new pop.options[populateModelSymbol](value);
       ret.$__.wasPopulated = true;
     }
 

@@ -4,12 +4,10 @@
  * Module dependencies.
  */
 
-const Mixed = require('../schema/mixed');
 const ValidationError = require('../error/validation');
 const cleanPositionalOperators = require('./schema/cleanPositionalOperators');
 const flatten = require('./common').flatten;
 const modifiedPaths = require('./common').modifiedPaths;
-const parallel = require('async/parallel');
 
 /**
  * Applies validators and defaults to update and findOneAndUpdate operations,
@@ -23,7 +21,7 @@ const parallel = require('async/parallel');
  * @api private
  */
 
-module.exports = function(query, schema, castedDoc, options) {
+module.exports = function(query, schema, castedDoc, options, callback) {
   let _keys;
   const keys = Object.keys(castedDoc || {});
   let updatedKeys = {};
@@ -38,7 +36,7 @@ module.exports = function(query, schema, castedDoc, options) {
   let i;
 
   for (i = 0; i < numKeys; ++i) {
-    if (keys[i].charAt(0) === '$') {
+    if (keys[i].startsWith('$')) {
       hasDollarUpdate = true;
       if (keys[i] === '$push' || keys[i] === '$addToSet') {
         _keys = Object.keys(castedDoc[keys[i]]);
@@ -55,7 +53,7 @@ module.exports = function(query, schema, castedDoc, options) {
         continue;
       }
       modifiedPaths(castedDoc[keys[i]], '', modified);
-      const flat = flatten(castedDoc[keys[i]]);
+      const flat = flatten(castedDoc[keys[i]], null, null, schema);
       const paths = Object.keys(flat);
       const numPaths = paths.length;
       for (let j = 0; j < numPaths; ++j) {
@@ -63,7 +61,7 @@ module.exports = function(query, schema, castedDoc, options) {
         key = keys[i];
         // With `$pull` we might flatten `$in`. Skip stuff nested under `$in`
         // for the rest of the logic, it will get handled later.
-        if (updatedPath.indexOf('$') !== -1) {
+        if (updatedPath.includes('$')) {
           continue;
         }
         if (key === '$set' || key === '$setOnInsert' ||
@@ -80,7 +78,7 @@ module.exports = function(query, schema, castedDoc, options) {
 
   if (!hasDollarUpdate) {
     modifiedPaths(castedDoc, '', modified);
-    updatedValues = flatten(castedDoc);
+    updatedValues = flatten(castedDoc, null, null, schema);
     updatedKeys = Object.keys(updatedValues);
   }
 
@@ -95,12 +93,6 @@ module.exports = function(query, schema, castedDoc, options) {
   function iter(i, v) {
     const schemaPath = schema._getSchema(updates[i]);
     if (schemaPath == null) {
-      return;
-    }
-
-    // gh-4305: `_getSchema()` will report all sub-fields of a 'Mixed' path
-    // as 'Mixed', so avoid double validating them.
-    if (schemaPath instanceof Mixed && schemaPath.$fullPath !== updates[i]) {
       return;
     }
 
@@ -144,6 +136,9 @@ module.exports = function(query, schema, castedDoc, options) {
                     _err.path = updates[i] + '.' + key;
                     validationErrors.push(_err);
                   }
+                } else {
+                  err.path = updates[i];
+                  validationErrors.push(err);
                 }
               }
               callback(null);
@@ -213,16 +208,44 @@ module.exports = function(query, schema, castedDoc, options) {
     })(i);
   }
 
-  return function(callback) {
-    parallel(validatorsToExecute, function() {
-      if (validationErrors.length) {
-        const err = new ValidationError(null);
-        for (let i = 0; i < validationErrors.length; ++i) {
-          err.addError(validationErrors[i].path, validationErrors[i]);
+  if (callback != null) {
+    let numValidators = validatorsToExecute.length;
+    if (numValidators === 0) {
+      return _done(callback);
+    }
+    for (const validator of validatorsToExecute) {
+      validator(function() {
+        if (--numValidators <= 0) {
+          _done(callback);
         }
-        return callback(err);
-      }
-      callback(null);
-    });
+      });
+    }
+
+    return;
+  }
+
+  return function(callback) {
+    let numValidators = validatorsToExecute.length;
+    if (numValidators === 0) {
+      return _done(callback);
+    }
+    for (const validator of validatorsToExecute) {
+      validator(function() {
+        if (--numValidators <= 0) {
+          _done(callback);
+        }
+      });
+    }
   };
+
+  function _done(callback) {
+    if (validationErrors.length) {
+      const err = new ValidationError(null);
+      for (let i = 0; i < validationErrors.length; ++i) {
+        err.addError(validationErrors[i].path, validationErrors[i]);
+      }
+      return callback(err);
+    }
+    callback(null);
+  }
 };

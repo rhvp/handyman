@@ -4,11 +4,14 @@
  * Module requirements.
  */
 
-const MongooseError = require('../error');
+const MongooseError = require('../error/index');
+const SchemaNumberOptions = require('../options/SchemaNumberOptions');
 const SchemaType = require('../schematype');
 const castNumber = require('../cast/number');
 const handleBitwiseOperator = require('./operators/bitwise');
 const utils = require('../utils');
+
+const populateModelSymbol = require('../helpers/symbols').populateModelSymbol;
 
 const CastError = SchemaType.CastError;
 let Document;
@@ -104,6 +107,7 @@ SchemaNumber.schemaName = 'Number';
  */
 SchemaNumber.prototype = Object.create(SchemaType.prototype);
 SchemaNumber.prototype.constructor = SchemaNumber;
+SchemaNumber.prototype.OptionsConstructor = SchemaNumberOptions;
 
 /*!
  * ignore
@@ -293,7 +297,7 @@ SchemaNumber.prototype.cast = function(value, doc, init) {
     const path = doc.$__fullPath(this.path);
     const owner = doc.ownerDocument ? doc.ownerDocument() : doc;
     const pop = owner.populated(path, true);
-    const ret = new pop.options.model(value);
+    const ret = new pop.options[populateModelSymbol](value);
     ret.$__.wasPopulated = true;
     return ret;
   }

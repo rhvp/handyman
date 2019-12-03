@@ -4,7 +4,9 @@ const CastError = require('../../error/cast');
 const StrictModeError = require('../../error/strict');
 const ValidationError = require('../../error/validation');
 const castNumber = require('../../cast/number');
+const cast = require('../../cast');
 const getEmbeddedDiscriminatorPath = require('./getEmbeddedDiscriminatorPath');
+const handleImmutable = require('./handleImmutable');
 const utils = require('../../utils');
 
 /*!
@@ -70,7 +72,7 @@ module.exports = function castUpdate(schema, obj, options, context, filter) {
   while (i--) {
     const op = ops[i];
     val = ret[op];
-    hasDollarKey = hasDollarKey || op.charAt(0) === '$';
+    hasDollarKey = hasDollarKey || op.startsWith('$');
 
     if (val &&
         typeof val === 'object' &&
@@ -89,6 +91,10 @@ module.exports = function castUpdate(schema, obj, options, context, filter) {
       const msg = 'Invalid atomic update value for ' + op + '. '
           + 'Expected an object, received ' + typeof val;
       throw new Error(msg);
+    }
+
+    if (op.startsWith('$') && utils.isEmptyObject(val)) {
+      delete ret[op];
     }
   }
 
@@ -134,9 +140,25 @@ function walkUpdatePath(schema, obj, op, options, context, filter, pref) {
     key = keys[i];
     val = obj[key];
 
+    // `$pull` is special because we need to cast the RHS as a query, not as
+    // an update.
+    if (op === '$pull') {
+      schematype = schema._getSchema(prefix + key);
+      if (schematype != null && schematype.schema != null) {
+        obj[key] = cast(schematype.schema, obj[key], options, context);
+        hasKeys = true;
+        continue;
+      }
+    }
+
     if (val && val.constructor.name === 'Object') {
       // watch for embedded doc schemas
       schematype = schema._getSchema(prefix + key);
+
+      if (handleImmutable(schematype, strict, obj, key, prefix + key, context)) {
+        continue;
+      }
+
       if (schematype && schematype.caster && op in castOps) {
         // embedded doc schema
         if ('$each' in val) {
@@ -218,6 +240,13 @@ function walkUpdatePath(schema, obj, op, options, context, filter, pref) {
       const checkPath = (key === '$each' || key === '$or' || key === '$and' || key === '$in') ?
         pref : prefix + key;
       schematype = schema._getSchema(checkPath);
+
+      // You can use `$setOnInsert` with immutable keys
+      if (op !== '$setOnInsert' &&
+          handleImmutable(schematype, strict, obj, key, prefix + key, context)) {
+        continue;
+      }
+
       let pathDetails = schema._getPathType(checkPath);
 
       // If no schema type, check for embedded discriminators
@@ -386,7 +415,7 @@ function castUpdateVal(schema, val, op, $conditional, context, path) {
       ++arrayDepth;
     }
 
-    let tmp = schema.cast(Array.isArray(val) ? val : [val]);
+    let tmp = schema.applySetters(Array.isArray(val) ? val : [val], context);
 
     for (let i = 0; i < additionalNesting; ++i) {
       tmp = tmp[0];
