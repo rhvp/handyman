@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-
 const Schema = mongoose.Schema;
+
 const GeoSchema = new Schema({
   type: {
     type: String,
@@ -12,7 +12,7 @@ const GeoSchema = new Schema({
   }
 })
 
-const PlumberSchema = new Schema({
+const mySchema = new Schema({
   email: {
     type: String,
     required: [true, "email is required"]
@@ -21,26 +21,29 @@ const PlumberSchema = new Schema({
     type: String,
     required: [true, "Password is required"]
   },
-  name: {
+  phone: {
     type: String,
-    required: [true, "Name is required"]
+    required: [true, "Phone Number is required"]
   },
-  number: {
-    type: Number,
-    required: [true, "Number is required"]
+  first_name: {
+    type: String,
+    required: [true, 'First Name field is required']
+  },
+  last_name: {
+    type: String,
+    required: [true, 'First Name field is required']
   },
   rating: {
     type: Number,
-    min: 0,
-    max: 5
+    default: 3
   },
   available: {
     type: Boolean,
     default: true
   },
-  geometry: GeoSchema,
-}, {timestamps: true});
+  geometry: GeoSchema
+}, {timestamps: true})
 
-const Plumber = mongoose.model('plumber', PlumberSchema);
 
-module.exports = Plumber;
+
+module.exports = mySchema;

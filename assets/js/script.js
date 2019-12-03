@@ -3,7 +3,7 @@ $(document).ready(function() {
 
 const myForm = document.querySelector('#search');
 const select = document.querySelector('#select-technician');
-
+let searchBtn = $('#search-btn');
 const getTec = (technicians) => {
   for (let i=0; i<technicians.length; i++) {
     if (technicians[i].available) {
@@ -14,9 +14,9 @@ const getTec = (technicians) => {
       let span2 = document.createElement('span')
       let span3 = document.createElement('span')
 
-      span1.innerHTML = technicians[i].name;
-      span2.innerHTML = "+234 " + technicians[i].number;
-      span3.innerHTML = Math.floor(technicians[i].dist.calculated) + " meters away";
+      span1.innerHTML = technicians[i].first_name;
+      span2.innerHTML = "+234 " + technicians[i].phone;
+      // span3.innerHTML = Math.floor(technicians[i].dist.calculated) + " meters away";
 
       list.appendChild(li);
 
@@ -25,6 +25,7 @@ const getTec = (technicians) => {
       li.appendChild(span3);
     }
   }
+  searchBtn.hide();
 }
 
 
@@ -33,14 +34,14 @@ myForm.addEventListener('submit', (e) => {
 let lat = myForm.elements.namedItem('lat').value;
 let lng = myForm.elements.namedItem('lng').value;
 let technician = select.value;
+let tech = technician.toLowerCase();
 
-if (technician === 'Plumber') {
   $.ajax({
     type: "GET",
-    url: "/plumbers?lat=" + lat + "&lng=" + lng,
-    success: function(plumbers) {
-      if (plumbers.length > 0) {
-      getTec(plumbers);
+    url: "/"+ tech + "s",
+    success: function(technicians) {
+      if (technicians.length > 0) {
+      getTec(technicians);
     } else {
       let list = document.getElementById('list');
       let li = document.createElement('li');
@@ -49,48 +50,12 @@ if (technician === 'Plumber') {
       span.innerHTML = `Sorry :( No ${technician}s available around your location`;
       li.appendChild(span);
     }
-    }
+  },
+  error: function () {
+    alert('Error processing request');
+  }
   });
-} else  if (technician === 'Carpenter'){
-  $.ajax({
-    type: "GET",
-    url: "/carpenters?lat=" + lat + "&lng=" + lng,
-    success: function(carpenters) {
-      if (carpenters.length > 0) {
-      getTec(carpenters);
-    } else {
-      let list = document.getElementById('list');
-      let li = document.createElement('li');
-      list.appendChild(li);
-      let span = document.createElement('span');
-      span.innerHTML = `Sorry :( No ${technician}s available around your location`;
-      li.appendChild(span);
-    }
-    }
-  });
-}
-
-
-
-  // $.ajax({
-  //   type: "GET",
-  //   url: "/plumbers?lat=" + lat + "&lng=" + lng,
-  //   success: function(plumbers) {
-  //     if (plumbers.length > 0) {
-  //     getTec(plumbers);
-  //   } else {
-  //     console.log("Something is wrong")
-  //     let list = document.getElementById('list');
-  //     let li = document.createElement('li');
-  //     list.appendChild(li);
-  //     let span = document.createElement('span');
-  //     span.innerHTML = `Sorry :( No E available around your location`;
-  //     li.appendChild(span);
-  //   }
-  //   }
-  // });
-
-
+ 
 
 });
 
@@ -99,6 +64,7 @@ select.onchange = () => {
   while(list.firstChild) {
     list.removeChild(list.firstChild)
   }
+  searchBtn.show()
 }
 
 });

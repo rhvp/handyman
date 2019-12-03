@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Sign Up</title>
+    <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+          aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">HandyMan</a>
+        </div>
+
+        <div class="navbar-collapse collapse" id="navbar">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/login">Login</a></li>
+            <li><a href="#"><span class="glyphicon glyphicon-wrench"></span></a></li>
+          </ul>
+        </div>
+
+      </div>
+    </nav>
+
+    <div class="container">
+      <form role="form" class="techform">
+              <div class="row">
+                <div class="col-xs-6 col-sm-6 col-md-6">
+                  <div class="form-group">
+                    <label for="first_name">First Name</label>
+                    <input type="text" name="first_name" id="first_name" class="form-control" required>
+                  </div>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6">
+                  <div class="form-group">
+                    <label for="last_name">Last Name</label>
+                    <input type="text" name="last_name" id="last_name" class="form-control" required>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" class="form-control" required>
+              </div>
+
+              <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" name="phone" id="phone" class="form-control" required>
+              </div>
+
+              <div class="form-group">
+                <label for="select-field">Select Field of Expertise</label>
+                <select class="form-control" id="select-field" required>
+                  <option default></option>
+                  <option >Electrician</option>
+                  <option >Carpenter</option>
+                  <option >Plumber</option>
+                  <option >Painter</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="userlat">Your Latitude:</label>
+                <input class="form-control" id="userlat" type="text" name="lat" value=""  required>
+              </div>
+              <div class="form-group">
+                <label for="userlong">Your Longitude:</label>
+                <input class="form-control" id="userlong" type="text" name="lng" value=""  required>
+              </div>
+
+              <div class="row">
+                <div class="col-xs-6 col-sm-6 col-md-6">
+                  <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" class="form-control" required>
+                  </div>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6">
+                  <div class="form-group">
+                    <label for="password_confirmation">Confirm Password</label>
+                    <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" required>
+                  </div>
+                </div>
+              </div>
+
+              <input type="submit" value="Register" class="btn btn-info btn-block">
+
+      </form>
+    </div>
+
+
+    <script src="/assets/js/jquery.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+
+
+    $(document).ready(function () {
+      navigator.geolocation.getCurrentPosition(successCb, failureCb);
+
+
+          function successCb(position) {
+            let pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+              regForm.elements.namedItem('lat').value = pos.lat;
+              regForm.elements.namedItem('lng').value = pos.lng;
+          }
+
+          function failureCb() {
+            console.log("geolocation didnt work")
+          }
+
+      let regForm = document.querySelector('.techform');
+      let technician = document.querySelector('#select-field');
+      let $first_name = regForm.elements.namedItem('first_name');
+      let $last_name = regForm.elements.namedItem('last_name');
+      let $email = regForm.elements.namedItem('email');
+      let $phone = regForm.elements.namedItem('phone');
+      let $password = regForm.elements.namedItem('password');
+      let $cpassword = regForm.elements.namedItem('password_confirmation');
+      let $lat = regForm.elements.namedItem('lat');
+      let $lng = regForm.elements.namedItem('lng');
+
+      regForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+
+          let $geo = [$lat.value, $lng.value];
+          let post_data = {
+            first_name: $first_name.value,
+            last_name: $last_name.value,
+            email: $email.value,
+            password: $password.value,
+            phone: $phone.value,
+            geometry: {
+              coordinates: $geo
+            }
+          }
+
+
+
+          let json_data = JSON.stringify(post_data);
+          console.log(json_data);
+          console.log(post_data);
+
+          const param = technician.value.toLowerCase();
+            $.ajax({
+              type: "POST",
+              url: '/' + param,
+              contentType: "application/json",
+              data: json_data,
+              success: function(newtech) {
+                console.log('success');
+                console.log(JSON.stringify(newtech));
+                 window.location.href ="/login";
+              },
+              error: function() {
+                alert('Error posting Technician');
+
+              }
+            });
+        })
+
+    })
+
+
+
+    </script>
+  </body>
+</html>

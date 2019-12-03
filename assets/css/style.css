@@ -72,7 +72,19 @@ li span{
     font-weight: bold;
 }
 
+.jumbotron {
+  background: #636160;
+}
 
+.btn-info {
+    background: #555;
+    padding: 10px;
+    font-size: 18px;
+}
+
+.my-btn {
+  padding: 10px
+}
 
 .buttons {
   margin-top: 80px;

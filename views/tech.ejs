@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Hire Plumbers</title>
+    <title>Hire</title>
     <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="/assets/css/style.css">
@@ -23,12 +23,12 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">HandyMan</a>
+          <a class="navbar-brand" href="/">HandyMan</a>
         </div>
 
         <div class="navbar-collapse collapse" id="navbar">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Login</a></li>
+            <li><a href="/login">Login</a></li>
             <li><a href="#"><span class="glyphicon glyphicon-wrench"></span></a></li>
           </ul>
         </div>
@@ -47,11 +47,10 @@
                 <div class="form-group">
                   <label for="select-technician">Select Technician</label>
                   <select class="form-control form-control-lg" id="select-technician" required>
-                    <option disabled>Electrician</option>
+                    <option >Electrician</option>
                     <option >Carpenter</option>
-                    <option disabled>Generator Technician</option>
                     <option >Plumber</option>
-                    <option disabled>Painter</option>
+                    <option >Painter</option>
                   </select>
                 </div>
                 <div class="form-group">
@@ -62,15 +61,8 @@
                   <label for="userlong">Your Longitude:</label>
                   <input class="form-control" id="userlong" type="text" name="lng" value=""  required>
                 </div>
-                <div class="form-group">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" required>
-                    <label class="form-check-label" for="invalidCheck2">
-                      Find by current location
-                    </label>
-                  </div>
-                </div>
-                <button type="submit" class="submit-btn">Search</button>
+                
+                <button type="submit" id="search-btn" class="submit-btn">Search</button>
               </form>
           </div>
           <ul id="list"></ul>
@@ -83,6 +75,5 @@
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="/assets/js/maps.js"></script>
     <script src="/assets/js/script.js"></script>
-
   </body>
 </html>

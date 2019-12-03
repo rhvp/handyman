@@ -1,17 +1,7 @@
 const express = require('express');
-const fs = require('fs');
-const http = require('http');
-const https = require('https');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
 const app = express();
 
-
-// Connecting to mongodb
-mongoose.connect('mongodb://localhost/plumberDb', {useNewUrlParser: true});
-mongoose.connect('mongodb://localhost/carpDb', {useNewUrlParser: true});
-mongoose.set('useCreateIndex', true);
-mongoose.Promise = global.Promise;
 
 
 // setting template engine
@@ -26,6 +16,7 @@ app.use(bodyParser.json());
 
 // initialize routes
 app.use(require('./Routes/api'));
+
 
 
 // error-handling middleware

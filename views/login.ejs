@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Login</title>
+    <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+          aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">HandyMan</a>
+        </div>
+
+        <div class="navbar-collapse collapse" id="navbar">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/signup">Sign Up</a></li>
+            <li><a href="#"><span class="glyphicon glyphicon-wrench"></span></a></li>
+          </ul>
+        </div>
+
+      </div>
+    </nav>
+
+    <div class="container">       
+            <form role="form">
+              <div class="row">
+                <div class="col-xs-6 col-sm-6 col-md-6">
+                  <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" name="email" id="email" class="form-control" required>
+                  </div>
+                </div>
+                
+                <div class="col-xs-6 col-sm-6 col-md-6">
+                  <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" class="form-control" required>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="select-field">Select Field of Expertise</label>
+                  <select class="form-control" id="select-field" required>
+                    <option default></option>
+                    <option >Electrician</option>
+                    <option >Carpenter</option>
+                    <option >Plumber</option>
+                    <option >Painter</option>
+                  </select>
+                </div>
+                <div class="row">
+                  <div class="col-md-12 center">
+                      <input type="submit" value="Login" class="btn btn-info">
+                  </div>
+                </div>
+                
+              </div>
+            </form>
+    </div>
+
+    <script src="/assets/js/jquery.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script>
+      $('form').on('submit', function (e) {
+        e.preventDefault();
+        let tech = $('#select-field');
+        let email = $('#email').val();
+        let password = $('#password').val();
+        let param = tech.value.toLowerCase();
+        $.ajax({
+          type: 'GET',
+          url: '/' + param + 'login/email=' + email + '&password=' + password,
+          contentType: 'application/json',
+          success: (technician) => {
+            console.log(technician);
+          },
+          error: () => {
+            alert('error getting login')
+          }
+        })
+      })
+    </script>
+  </body>
+</html>
