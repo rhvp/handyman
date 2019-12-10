@@ -1,5 +1,5 @@
 {
-  "name": "Sody",
+  "name": "handyman",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,10 +10,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
     "ejs": "^2.7.4",
     "express": "^4.17.1",
+    "express-session": "^1.17.0",
     "mongoose": "^5.7.13",
-    "nodemon": "^1.19.4"
+    "nodemon": "^1.19.4",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0"
   }
 }

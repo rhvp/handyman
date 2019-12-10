@@ -1,17 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const elect = require('../controllers/electController')
-const carp = require('../controllers/carpController')
-const plumb = require('../controllers/plumbController')
-const paint = require('../controllers/paintController')
+const elect = require('../controllers/electController');
+const carp = require('../controllers/carpController');
+const plumb = require('../controllers/plumbController');
+const paint = require('../controllers/paintController');
+const ac_tech = require('../controllers/ac_techController');
+const gen_tech = require('../controllers/gen_techController')
+const gard = require('../controllers/gardenerController');
 
-
-router.get('/tech',(req, res)=>{
+// get requests
+router.get('/tech',(req, res) => {
     res.render('tech');
 });
 
 router.get('/', (req, res) => {
-  // include sign in with third-party api on homepage
   res.render('home');
 });
 
@@ -31,9 +33,15 @@ router.get('/electricians', elect.get_elects);
 
 router.get('/painters', paint.get_painters);
 
+router.get('/ac_technicians', ac_tech.get_ac_technicians);
+
+router.get('/generator_technicians', gen_tech.get_gen_technicians);
+
+router.get('/gardeners', gard.get_gardeners)
 
 
 
+// Post requests
 router.post('/plumber', plumb.post_plumber);
 
 router.post('/carpenter', carp.post_carpenter);
@@ -42,19 +50,9 @@ router.post('/electrician', elect.post_elect);
 
 router.post('/painter', paint.post_painter);
 
+router.post('/ac_technician', ac_tech.post_ac_technician);
 
-/*router.put('/plumbers/:id',(req, res, next) => {
-  Plumber.findByIdAndUpdate({_id: req.params.id}, req.body, {new: true}).then(function(plumber) {
-    res.send(plumber);
-  }).catch(next);
-});
+router.post('/gen_technician', gen_tech.post_gen_technician);
 
-router.delete('/plumbers/:id', (req, res, next) => {
-Plumber.remove({_id: req.params.id}).then((plumber) => {
-  res.send(plumber)
-}).catch(next);
-});*/
-
-
-
+router.post('/gardener', gard.post_gardener);
 module.exports = router;

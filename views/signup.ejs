@@ -24,7 +24,7 @@
 
         <div class="navbar-collapse collapse" id="navbar">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="/login">Login</a></li>
+            <!-- <li><a href="/login">Login</a></li> -->
             <li><a href="#"><span class="glyphicon glyphicon-wrench"></span></a></li>
           </ul>
         </div>
@@ -56,8 +56,15 @@
 
               <div class="form-group">
                 <label for="phone">Phone Number</label>
-                <input type="tel" name="phone" id="phone" class="form-control" required>
+                <div class="input-group input-group-lg mb-3">
+                
+                <div class="input-group-addon">
+                  <span class="input-group-text" id="basic-addon1">+234</span>
+                </div>
+                <input type="text" name="phone" id="phone" minlength="10" maxlength="10" aria-label="+234" class="form-control" aria-describedby="basic-addon1" required>
               </div>
+              </div>
+              
 
               <div class="form-group">
                 <label for="select-field">Select Field of Expertise</label>
@@ -67,16 +74,22 @@
                   <option >Carpenter</option>
                   <option >Plumber</option>
                   <option >Painter</option>
+                  <option >Ac_Technician</option>
+                  <option >Generator_Technician</option>
+                  <option >Gardener</option>
                 </select>
               </div>
 
               <div class="form-group">
-                <label for="userlat">Your Latitude:</label>
-                <input class="form-control" id="userlat" type="text" name="lat" value=""  required>
+                <input class="form-control" id="userlat" type="hidden" name="lat" value=""  required>
               </div>
               <div class="form-group">
-                <label for="userlong">Your Longitude:</label>
-                <input class="form-control" id="userlong" type="text" name="lng" value=""  required>
+                <input class="form-control" id="userlong" type="hidden" name="lng" value=""  required>
+              </div>
+
+              <div class="form-group">
+                <label for="address">Work Address</label>
+                <input class="form-control" id="address" name="address" type="text" required>
               </div>
 
               <div class="row">
@@ -102,80 +115,7 @@
 
     <script src="/assets/js/jquery.js"></script>
     <script src="/assets/js/bootstrap.min.js"></script>
-    <script type="text/javascript">
-
-
-    $(document).ready(function () {
-      navigator.geolocation.getCurrentPosition(successCb, failureCb);
-
-
-          function successCb(position) {
-            let pos = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            };
-              regForm.elements.namedItem('lat').value = pos.lat;
-              regForm.elements.namedItem('lng').value = pos.lng;
-          }
-
-          function failureCb() {
-            console.log("geolocation didnt work")
-          }
-
-      let regForm = document.querySelector('.techform');
-      let technician = document.querySelector('#select-field');
-      let $first_name = regForm.elements.namedItem('first_name');
-      let $last_name = regForm.elements.namedItem('last_name');
-      let $email = regForm.elements.namedItem('email');
-      let $phone = regForm.elements.namedItem('phone');
-      let $password = regForm.elements.namedItem('password');
-      let $cpassword = regForm.elements.namedItem('password_confirmation');
-      let $lat = regForm.elements.namedItem('lat');
-      let $lng = regForm.elements.namedItem('lng');
-
-      regForm.addEventListener('submit', (e) => {
-          e.preventDefault();
-
-          let $geo = [$lat.value, $lng.value];
-          let post_data = {
-            first_name: $first_name.value,
-            last_name: $last_name.value,
-            email: $email.value,
-            password: $password.value,
-            phone: $phone.value,
-            geometry: {
-              coordinates: $geo
-            }
-          }
-
-
-
-          let json_data = JSON.stringify(post_data);
-          console.log(json_data);
-          console.log(post_data);
-
-          const param = technician.value.toLowerCase();
-            $.ajax({
-              type: "POST",
-              url: '/' + param,
-              contentType: "application/json",
-              data: json_data,
-              success: function(newtech) {
-                console.log('success');
-                console.log(JSON.stringify(newtech));
-                 window.location.href ="/login";
-              },
-              error: function() {
-                alert('Error posting Technician');
-
-              }
-            });
-        })
-
-    })
-
-
-
-    </script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyB8UrEU6mB12NbY4zUv3T2Jevh6xTMg0h4"></script>
+    <script src="/assets/js/signupscript.js"></script>
   </body>
 </html>

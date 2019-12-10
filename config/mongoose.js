@@ -2,15 +2,19 @@ const mongoose = require('mongoose')
 
 
 // Connecting to mongodb
-const handymanDb = mongoose.createConnection('mongodb://localhost/handymanDb', {useNewUrlParser: true});
+mongoose.connect('mongodb+srv://'+ process.env.DB_USER +':'+ process.env.DB_PASSWORD + '@my-cluster-01-a0hk3.mongodb.net/handymandb?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true}).then(
+  res => {
+    console.log('handymandb on mlab connected')
+  }
+).catch(err => {
+  console.log('handymandb mlab connection failed')
+});
 
 
-handymanDb.once('open', () => {
-  console.log('handymanDb connected');
-})
+
 
 
 mongoose.set('useCreateIndex', true);
 mongoose.Promise = global.Promise;
 
-module.exports = handymanDb
+module.exports = mongoose.connection;
