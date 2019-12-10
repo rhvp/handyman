@@ -27,7 +27,11 @@ app.use((err, req, res, next) => {
   res.status(422).send({error: err.message});
 });
 
+process.on('unhandledRejection', (reason, promise) => {
+  console.log('Unhandled Rejection at:', reason.stack || reason)
+})
 
-app.listen(4000, () => {
-  console.log("now listening on port 4000");
+const port = process.env.PORT || 4000;
+app.listen(port, () => {
+  console.log("now listening on port: " + port);
 });
