@@ -31,9 +31,10 @@ const getTec = (technicians) => {
 const geocoder = new google.maps.Geocoder()
 
 myForm.addEventListener('submit', (e) => {
+  e.preventDefault();
   searchBtn.html('searching..');
   searchBtn.attr('disabled', true);
-  e.preventDefault();
+  
   let address = myForm.elements.namedItem('address').value;
   let lat = myForm.elements.namedItem('lat').value;
   let lng = myForm.elements.namedItem('lng').value;
