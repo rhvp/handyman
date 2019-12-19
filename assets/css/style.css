@@ -89,3 +89,15 @@ li span{
 .buttons {
   margin-top: 80px;
 }
+
+.techform {
+    font-size: large;
+}
+
+@media (max-width: 575px) { 
+    .techform {
+        font-weight: 300;
+        max-width: 360px;
+        margin-left: 42px;
+    }
+}

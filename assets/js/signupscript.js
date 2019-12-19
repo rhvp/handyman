@@ -32,8 +32,10 @@ $('#address').change(function() {
 
   regForm.addEventListener('submit', (e) => {
       e.preventDefault();
-
-      let $geo = [$lat.value, $lng.value];
+      if($password.value != $cpassword.value) {
+        alert('Passwords dont match!')
+      } else{
+        let $geo = [$lat.value, $lng.value];
       let post_data = {
         first_name: $first_name.value,
         last_name: $last_name.value,
@@ -52,21 +54,23 @@ $('#address').change(function() {
       console.log(post_data);
 
       const param = technician.value.toLowerCase();
-        $.ajax({
-          type: "POST",
-          url: '/' + param,
-          contentType: "application/json",
-          data: json_data,
-          success: function(newtech) {
-            console.log('success');
-            console.log(JSON.stringify(newtech));
-             window.location.href ="/";
-          },
-          error: function() {
-            alert('Error posting Technician');
+        // $.ajax({
+        //   type: "POST",
+        //   url: '/' + param,
+        //   contentType: "application/json",
+        //   data: json_data,
+        //   success: function(newtech) {
+        //     console.log('success');
+        //     console.log(JSON.stringify(newtech));
+        //      window.location.href ="/";
+        //   },
+        //   error: function() {
+        //     alert('Error posting Technician');
 
-          }
-        });
+        //   }
+        // });
+      }
+      
     })
 
 })
