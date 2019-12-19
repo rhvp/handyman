@@ -95,9 +95,7 @@ li span{
 }
 
 @media (max-width: 575px) { 
-    .techform {
+    form {
         font-weight: 300;
-        max-width: 360px;
-        margin-left: 42px;
     }
 }

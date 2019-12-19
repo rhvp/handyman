@@ -9,12 +9,16 @@ $('#address').change(function() {
   if (status == google.maps.GeocoderStatus.OK) {
   lat = results[0].geometry.location.lat();
   lng = results[0].geometry.location.lng();
-  console.log(results[0].formatted_address);
   $('#userlat').val(lat);
   $('#userlong').val(lng);
+  $('#address').val(results[0].formatted_address);
     } 
   }); 
 })
+
+$('#phone').keyup(function(){
+  $(this).val($(this).val().replace(/(\d{3})\-?(\d{3})\-?(\d{4})/,'$1-$2-$3'))
+});
 
 
 
@@ -47,28 +51,32 @@ $('#address').change(function() {
         }
       }
 
-
-
       let json_data = JSON.stringify(post_data);
-      console.log(json_data);
-      console.log(post_data);
+      
 
       const param = technician.value.toLowerCase();
-        // $.ajax({
-        //   type: "POST",
-        //   url: '/' + param,
-        //   contentType: "application/json",
-        //   data: json_data,
-        //   success: function(newtech) {
-        //     console.log('success');
-        //     console.log(JSON.stringify(newtech));
-        //      window.location.href ="/";
-        //   },
-        //   error: function() {
-        //     alert('Error posting Technician');
-
-        //   }
-        // });
+      if(post_data.geometry.coordinates[0]) {
+        $('#register-btn').val('Registering Data...')
+        $.ajax({
+          type: "POST",
+          url: '/' + param,
+          contentType: "application/json",
+          data: json_data,
+          success: function(newtech) {
+            console.log('success');
+            console.log(JSON.stringify(newtech));
+            $('#register-btn').val('Registered.')
+             window.location.href ="/";
+          },
+          error: function() {
+            alert('Error posting Technician Data');
+            $('#register-btn').val('Register');
+          }
+        });
+      } else {
+        alert('Invalid Address.')
+      }
+        
       }
       
     })
