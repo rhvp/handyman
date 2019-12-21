@@ -9,15 +9,11 @@ exports.get_gen_technicians = (req, res, next) => {
     spherical: true, maxDistance: 3000, distanceField: "dist.calculated" }
     }]).then(gen_technician => {
         res.send(gen_technician);
-    }).catch(err=>{
-        console.log('error: ', err);
-    });
+    }).catch(next);
 }
 
 exports.post_gen_technician = (req, res, next) => {
     Gen_Technician.create(req.body).then(gen_technician=>{
         res.send(gen_technician)
-    }).catch(err=>{
-        console.log('error: ', err);
-    });
+    }).catch(next);
 }

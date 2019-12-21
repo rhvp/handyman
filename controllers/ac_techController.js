@@ -7,17 +7,13 @@ exports.get_ac_technicians = (req, res, next) => {
     Ac_Technician.aggregate([{ $geoNear: { near: {type: 'Point',
     coordinates: [parseFloat(req.query.lat), parseFloat(req.query.lng)]},
     spherical: true, maxDistance: 3000, distanceField: "dist.calculated" }
-    }]).then(ac_technician=>{
-        res.send(ac_technician)
-    }).catch(err=>{
-        console.log('error: ', err);
-    });
+    }]).then(ac_technicians=>{
+        res.send(ac_technicians)
+    }).catch(next);
 }
 
 exports.post_ac_technician = (req, res, next) => {
     Ac_Technician.create(req.body).then(ac_technician=>{
         res.send(ac_technician)
-    }).catch(err=>{
-        console.log('error: ', err)
-    })
+    }).catch(next);
 }

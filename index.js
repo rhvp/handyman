@@ -20,16 +20,11 @@ app.use(bodyParser.json());
 // initialize routes
 app.use(require('./Routes/api'));
 
-
-
 // error-handling middleware
 app.use((err, req, res, next) => {
+  console.error(err.stack);
   res.status(422).send({error: err.message});
 });
-
-process.on('unhandledRejection', (reason, promise) => {
-  console.log('Unhandled Rejection at:', reason.stack || reason)
-})
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => {
