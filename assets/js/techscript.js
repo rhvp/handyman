@@ -71,7 +71,16 @@ myForm.addEventListener('submit', (e) => {
           alert('Error processing request');
         }
         });
-        } 
+        } else {
+          alert('Invalid Address!!')
+          let list = document.getElementById('list');
+            let li = document.createElement('li');
+            list.appendChild(li);
+            let span = document.createElement('span');
+            span.innerHTML = `Sorry No ${technician}s available around your location :(`;
+            li.appendChild(span);
+            searchBtn.hide();
+        }
         });
 
 
