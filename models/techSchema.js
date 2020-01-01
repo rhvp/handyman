@@ -39,7 +39,7 @@ const mySchema = new Schema({
   },
   available: {
     type: Boolean,
-    default: true
+    default: false
   },
   geometry: GeoSchema
 }, {timestamps: true})

@@ -24,6 +24,15 @@ const getTec = (technicians) => {
       li.appendChild(span1);
       li.appendChild(span2);
       li.appendChild(span3);
+    } else {
+            let tech = select.value;
+            let list = document.getElementById('list');
+            let li = document.createElement('li');
+            list.appendChild(li);
+            let span = document.createElement('span');
+            span.innerHTML = `Sorry, No ${tech}s are available currently at your location :(`;
+            li.appendChild(span);
+            searchBtn.hide();
     }
   })
   searchBtn.hide();
@@ -44,9 +53,9 @@ myForm.addEventListener('submit', (e) => {
     if (status == google.maps.GeocoderStatus.OK) {
       address = results[0].formatted_address;
       $('#address').val(address);
-      $('#address').attr('disabled', true)
-      lat = results[0].geometry.location.lat()
-      lng = results[0].geometry.location.lng()
+      $('#address').attr('disabled', true);
+      lat = results[0].geometry.location.lat();
+      lng = results[0].geometry.location.lng();
       let tech = technician.toLowerCase();
       
       
@@ -62,7 +71,7 @@ myForm.addEventListener('submit', (e) => {
             let li = document.createElement('li');
             list.appendChild(li);
             let span = document.createElement('span');
-            span.innerHTML = `Sorry No ${technician}s available around your location :(`;
+            span.innerHTML = `Sorry, No ${technician}s are registered around your location :(`;
             li.appendChild(span);
             searchBtn.hide();
           }
@@ -72,19 +81,12 @@ myForm.addEventListener('submit', (e) => {
         }
         });
         } else {
-          alert('Invalid Address!!')
-          let list = document.getElementById('list');
-            let li = document.createElement('li');
-            list.appendChild(li);
-            let span = document.createElement('span');
-            span.innerHTML = `Sorry No ${technician}s available around your location :(`;
-            li.appendChild(span);
-            searchBtn.hide();
+          alert('Invalid Address!!');
+          searchBtn.html('Search');
+          $('#address').removeAttr('disabled');
+          searchBtn.removeAttr('disabled');
         }
         });
-
-
-      
 
       });
 
@@ -98,6 +100,6 @@ myForm.addEventListener('submit', (e) => {
     searchBtn.show()
     $('#address').removeAttr('disabled');
   }
-      
+
 
 });
