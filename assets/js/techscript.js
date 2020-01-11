@@ -81,7 +81,7 @@ myForm.addEventListener('submit', (e) => {
         }
         });
         } else {
-          alert('Invalid Address!!');
+          alert('Error Parsing Address! Make sure to enter a valid address.');
           searchBtn.html('Search');
           $('#address').removeAttr('disabled');
           searchBtn.removeAttr('disabled');
@@ -97,7 +97,7 @@ myForm.addEventListener('submit', (e) => {
     }
     searchBtn.html('Search');
     searchBtn.removeAttr('disabled');
-    searchBtn.show()
+    searchBtn.show();
     $('#address').removeAttr('disabled');
   }
 
