@@ -8,7 +8,8 @@ exports.get_gen_technicians = (req, res, next) => {
     coordinates: [parseFloat(req.query.lat), parseFloat(req.query.lng)]},
     spherical: true, maxDistance: 3000, distanceField: "dist.calculated" }
     }]).then(gen_technician => {
-        res.send(gen_technician);
+        const availableTechnicians = gen_technician.filter(tech=>tech.available);
+        res.send(availableTechnicians);
     }).catch(next);
 }
 

@@ -9,7 +9,8 @@ exports.get_plumbs = (req, res, next) => {
     coordinates: [parseFloat(req.query.lat), parseFloat(req.query.lng)]},
     spherical: true, maxDistance: 3000, distanceField: "dist.calculated" }
   }]).then((plumbers) => {
-        res.send(plumbers)
+    const availableTechnicians = plumbers.filter(tech=>tech.available);
+    res.send(availableTechnicians);
     }).catch(next);
 }
 

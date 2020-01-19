@@ -8,7 +8,8 @@ exports.get_painters = (req, res, next) => {
     coordinates: [parseFloat(req.query.lat), parseFloat(req.query.lng)]},
     spherical: true, maxDistance: 3000, distanceField: "dist.calculated" }
   }]).then((painters) => {
-        res.send(painters)
+    const availableTechnicians = painters.filter(tech=>tech.available);
+    res.send(availableTechnicians);
     }).catch(next);
 }
 

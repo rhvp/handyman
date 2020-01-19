@@ -12,7 +12,10 @@ $('#address').change(function() {
   $('#userlat').val(lat);
   $('#userlong').val(lng);
   $('#address').val(results[0].formatted_address);
-    } 
+    } else {
+      alert('Error Parsing Address!! Make sure you enter a valid addres.');
+      $('#address').val('');
+    }
   }); 
 })
 
@@ -73,9 +76,7 @@ $('#phone').keyup(function(){
             $('#register-btn').val('Register');
           }
         });
-      } else {
-        alert('Invalid Address.')
-      }
+      } 
         
       }
       
